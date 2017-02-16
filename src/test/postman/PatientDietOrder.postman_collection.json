@@ -1,0 +1,418 @@
+{
+	"variables": [],
+	"info": {
+		"name": "DavitaMicroservicesPOC",
+		"_postman_id": "9739a5e8-e5af-b19c-2742-37b89c1e3115",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "auth-service: generate token ",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"// put received token to global variable: http://blog.getpostman.com/2014/01/27/extracting-data-from-responses-and-chaining-requests/",
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setGlobalVariable(\"poc_token\", jsonData.access_token);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{docker_host}}:8181/uaa/oauth/token",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic aXBhZDppcGFkc2VjcmV0",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "password",
+							"value": "password",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "username",
+							"value": "user",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "scope",
+							"value": "openid",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "client_id",
+							"value": "ipad",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "client_secret",
+							"value": "ipadsecret",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": "generate oauth2 token and store it in a global variable"
+			},
+			"response": []
+		},
+		{
+			"name": "edge: auth-service: generate token ",
+			"request": {
+				"url": "http://{{docker_host}}:9999/auth-service/uaa/oauth/token",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic aXBhZDppcGFkc2VjcmV0",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "password",
+							"value": "password",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "username",
+							"value": "user",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "scope",
+							"value": "openid",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "client_id",
+							"value": "ipad",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "client_secret",
+							"value": "ipadsecret",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "auth-service: get user for token",
+			"request": {
+				"url": "http://{{docker_host}}:8181/uaa/user",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{poc_token}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "edge: auth-service: get user for token",
+			"request": {
+				"url": "http://{{docker_host}}:9999/auth-service/uaa/user",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{poc_token}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "patientdietorder: get cache-values",
+			"request": {
+				"url": "http://{{docker_host}}:8081/patientdietorders/cache-values",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{poc_token}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "edge: patientdietorder: get cache-values",
+			"request": {
+				"url": "http://{{docker_host}}:9999/patientdietorder-service/patientdietorders/cache-values",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{poc_token}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "patientdietorder: get search-values",
+			"request": {
+				"url": "http://{{docker_host}}:8081/patientdietorders/search-values",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{poc_token}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "edge: patientdietorder: get search-values",
+			"request": {
+				"url": "http://{{docker_host}}:9999/patientdietorder-service/patientdietorders/search-values",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{poc_token}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "patientdietorder: create",
+			"request": {
+				"url": "http://{{docker_host}}:8081/patientdietorders",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{poc_token}}",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"value\": \"testMessage#1\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "edge: patientdietorder: create",
+			"request": {
+				"url": "http://{{docker_host}}:9999/patientdietorder-service/patientdietorders",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{poc_token}}",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"value\": \"testMessage#1\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "patientdietorder: update",
+			"request": {
+				"url": "http://{{docker_host}}:8081/patientdietorders",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{poc_token}}",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"id\": \"{{patientdietorder_id}}\", \"value\": \"testMessage#1\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "edge: patientdietorder: update",
+			"request": {
+				"url": "http://{{docker_host}}:9999/patientdietorder-service/patientdietorders",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{poc_token}}",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"id\": \"{{patientdietorder_id}}\", \"value\": \"testMessage#13\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "patientdietorder: delete",
+			"request": {
+				"url": "http://{{docker_host}}:8081/patientdietorders/{{patientdietorder_id}}",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{poc_token}}",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "edge: patientdietorder: delete",
+			"request": {
+				"url": "http://{{docker_host}}:9999/patientdietorder-service/patientdietorders/{{patientdietorder_id}}",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{poc_token}}",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
